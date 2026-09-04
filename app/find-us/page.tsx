@@ -32,7 +32,7 @@ export default function FindUsPage() {
               className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-start ${i % 2 === 1 ? "lg:flex-row-reverse" : ""}`}
             >
               {/* Map */}
-              <div className="rounded-2xl overflow-hidden h-72 w-full" style={{ border: "1px solid rgba(74,44,28,0.1)" }}>
+              <div className="relative rounded-2xl overflow-hidden h-72 w-full" style={{ border: "1px solid rgba(74,44,28,0.1)" }}>
                 <iframe
                   title={`Burra ${loc.name} map`}
                   src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address + ", " + loc.city)}&output=embed`}
@@ -40,6 +40,13 @@ export default function FindUsPage() {
                   style={{ border: 0 }}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
+                />
+                <a
+                  href={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address + ", " + loc.city)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0"
+                  aria-label={`Open ${loc.name} in Google Maps`}
                 />
               </div>
 
