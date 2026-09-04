@@ -43,12 +43,13 @@ export default function ExpandingLocations() {
       {LOCATIONS.map((loc, i) => (
         <motion.div
           key={loc.name}
-          className="relative overflow-hidden flex-shrink-0"
+          className="relative overflow-hidden flex-shrink-0 cursor-pointer"
           style={{ minWidth: 72 }}
           animate={{ flex: active === i ? 5 : 1 }}
           transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
           onHoverStart={() => setActive(i)}
           onHoverEnd={() => setActive(null)}
+          onClick={() => window.open(`https://maps.google.com/maps?q=${encodeURIComponent(loc.address + ", " + loc.postcode)}`, "_blank")}
         >
           {/* Image */}
           <Image
