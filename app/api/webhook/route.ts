@@ -27,7 +27,10 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "checkout.session.completed") {
-    const session = event.data.object as Stripe.Checkout.Session;
+    const raw = event.data.object as Stripe.Checkout.Session;
+    const session = await stripe.checkout.sessions.retrieve(raw.id, {
+      expand: ["shipping_details", "customer_details"],
+    });
     const customerEmail = session.customer_details?.email;
     const customerName = session.customer_details?.name ?? "there";
     const phone = session.customer_details?.phone ?? "Not provided";
