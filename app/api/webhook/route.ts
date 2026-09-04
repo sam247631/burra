@@ -34,7 +34,11 @@ export async function POST(req: NextRequest) {
     const customerEmail = session.customer_details?.email;
     const customerName = session.customer_details?.name ?? "there";
     const phone = session.customer_details?.phone ?? "Not provided";
-    const shippingAddress = formatAddress(session.shipping_details?.address);
+    const shippingAddress = formatAddress(
+      session.shipping_details?.address ??
+      (session as unknown as { collected_information?: { shipping_details?: { address?: Stripe.Address } } })
+        .collected_information?.shipping_details?.address
+    );
     const orderId = session.id.slice(-8).toUpperCase();
 
     // Fetch line items from Stripe
