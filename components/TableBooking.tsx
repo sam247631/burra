@@ -47,6 +47,8 @@ export default function TableBooking({ event }: { event: Event }) {
   }
 
   if (isWorkshop) {
+    const isSoldOut = event.soldOut || remaining === 0;
+
     return (
       <div>
         <h2
@@ -56,9 +58,29 @@ export default function TableBooking({ event }: { event: Event }) {
           Book your tickets
         </h2>
 
+        {isSoldOut && (
+          <div
+            className="rounded-2xl p-8 text-center mb-4"
+            style={{ backgroundColor: "var(--sand)", border: "1.5px solid rgba(74,44,28,0.12)" }}
+          >
+            <p className="text-2xl mb-2">☕</p>
+            <p className="font-bold text-base mb-1" style={{ fontFamily: "var(--font-playfair)", color: "var(--espresso)" }}>
+              This session is sold out
+            </p>
+            <p className="text-xs opacity-50" style={{ color: "var(--espresso)" }}>
+              Check our other upcoming dates — new sessions are added regularly.
+            </p>
+          </div>
+        )}
+
         <div
           className="rounded-2xl p-6"
-          style={{ backgroundColor: "var(--warm-white)", border: "1.5px solid rgba(184,115,42,0.2)" }}
+          style={{
+            backgroundColor: "var(--warm-white)",
+            border: "1.5px solid rgba(184,115,42,0.2)",
+            opacity: isSoldOut ? 0.4 : 1,
+            pointerEvents: isSoldOut ? "none" : "auto",
+          }}
         >
           <div className="flex items-center gap-4 mb-6">
             <label className="text-sm font-medium opacity-70 flex items-center gap-2" style={{ color: "var(--espresso)" }}>

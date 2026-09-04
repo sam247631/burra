@@ -184,8 +184,8 @@ export default function Footer() {
         >
           <p>© {new Date().getFullYear()} Burra Bristol Ltd. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="hover:opacity-60 transition-opacity">Privacy Policy</a>
-            <a href="#" className="hover:opacity-60 transition-opacity">Terms &amp; Conditions</a>
+            <Link href="/privacy" className="hover:opacity-60 transition-opacity">Privacy Policy</Link>
+            <Link href="/terms" className="hover:opacity-60 transition-opacity">Terms &amp; Conditions</Link>
           </div>
         </div>
       </div>
