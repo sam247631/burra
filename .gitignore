@@ -53,3 +53,6 @@ burra kilo.*
 "layout redland .png"
 "Extract logo.jpeg"
 Extract logo.svg
+
+# Local Netlify folder
+.netlify
