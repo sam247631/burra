@@ -15,9 +15,6 @@ import CraftSection       from "@/components/CraftSection";
 import GalleryStrip       from "@/components/GalleryStrip";
 import InstagramStrip     from "@/components/InstagramStrip";
 
-// Ticker repeated so marquee is seamless at any viewport width
-const TICK = "AWARD-WINNING COFFEE  ·  EST. 2021  ·  REDLAND  ·  NORTH STREET  ·  CLIFTON VILLAGE  ·  ANTIPODEAN  ·  ORGANIC  ·  LOCALLY SOURCED  ·  BRISTOL MADE  ·  EXTRACT COFFEE  ·  WALK-INS WELCOME  ·  ";
-const ticker = TICK.repeat(4);
 
 export default function HomePage() {
   return (
@@ -29,25 +26,9 @@ export default function HomePage() {
       <HeroSection heroImage="/images/north-street-opening.jpg" />
 
       {/* ══════════════════════════════════════
-          2  TICKER
-      ══════════════════════════════════════ */}
-      <div className="py-3 overflow-hidden" style={{ backgroundColor: "var(--espresso)" }}>
-        <div className="overflow-hidden marquee-pause">
-          <div className="marquee-track flex whitespace-nowrap">
-            <span
-              className="text-fluid-label font-semibold uppercase tracking-[0.42em] pr-8"
-              style={{ color: "rgba(247,243,238,0.45)" }}
-            >
-              {ticker}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════
           3  MISSION — full-bleed dark
       ══════════════════════════════════════ */}
-      <section className="py-28 md:py-40 px-8 md:px-14" style={{ backgroundColor: "var(--espresso)" }}>
+      <section className="py-14 md:py-20 px-8 md:px-14" style={{ backgroundColor: "var(--espresso)" }}>
         <div className="max-w-screen-xl mx-auto">
           {/* Big statement — each line clips up individually */}
           <div className="space-y-2">
