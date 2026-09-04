@@ -7,6 +7,7 @@ import HeroSection        from "@/components/HeroSection";
 import ReviewsMarquee     from "@/components/ReviewsMarquee";
 import EventCard          from "@/components/EventCard";
 import RevealText         from "@/components/RevealText";
+import CountUp            from "@/components/CountUp";
 import CoffeeDrip         from "@/components/CoffeeDrip";
 import ShopStrip          from "@/components/ShopStrip";
 import ExpandingLocations from "@/components/ExpandingLocations";
@@ -23,6 +24,32 @@ export default function HomePage() {
           1  HERO
       ══════════════════════════════════════ */}
       <HeroSection heroImage="/images/north-street-opening.jpg" />
+
+      {/* ══════════════════════════════════════
+          2  STATS BAR
+      ══════════════════════════════════════ */}
+      <div className="py-8 px-8 md:px-14" style={{ backgroundColor: "var(--espresso)" }}>
+        <div className="max-w-screen-xl mx-auto flex flex-wrap gap-x-10 gap-y-4 items-center justify-between">
+          {[
+            { to: 4.8, decimals: 1, suffix: "★", label: "Google" },
+            { to: 380, suffix: "+",               label: "Reviews" },
+            { to: 3,                               label: "Locations" },
+            { to: 2021,                            label: "Founded" },
+          ].map(({ to, decimals, suffix, label }) => (
+            <div key={label} className="flex items-baseline gap-2">
+              <p
+                className="font-bold text-white"
+                style={{ fontFamily: "var(--font-playfair)", fontSize: "clamp(1.6rem,3vw,2.5rem)" }}
+              >
+                <CountUp to={to} decimals={decimals ?? 0} suffix={suffix ?? ""} />
+              </p>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: "rgba(247,243,238,0.35)" }}>
+                {label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* ══════════════════════════════════════
           4  STORY — image clip + pull quote
