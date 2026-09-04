@@ -37,7 +37,7 @@ export default function FindUsPage() {
                   title={`Burra ${loc.name} map`}
                   src={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address + ", " + loc.city)}&output=embed`}
                   className="w-full h-full"
-                  style={{ border: 0 }}
+                  style={{ border: 0, pointerEvents: "none" }}
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
