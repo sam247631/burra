@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const resend = new Resend(process.env.RESEND_API_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-const FULFILLMENT_EMAIL = "burrabristol@gmail.com";
+const FULFILLMENT_EMAIL = "hello@burrabristol.co.uk";
 
 const COLOR_MAP: Record<string, string> = {
   white: "WHI",
@@ -197,7 +197,7 @@ export async function POST(req: NextRequest) {
               <p style="margin:0;">${shippingAddress}</p>
             </div>
             <p style="font-size:13px; opacity:0.5;">
-              Questions? Reply to this email or find us at burrabristol@gmail.com<br/>
+              Questions? Reply to this email or find us at hello@burrabristol.co.uk<br/>
               Burra · North Street · Clifton · Redland
             </p>
           </div>

@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
       await resend.emails.send({
         from: "Burra Website <onboarding@resend.dev>",
-        to: "burrabristol@gmail.com",
+        to: "hello@burrabristol.co.uk",
         replyTo: email,
         subject: `Private Hire Enquiry — ${name}`,
         html: `
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       });
 
       await resend.emails.send({
-        from: "Burra Bristol <burrabristol@gmail.com>",
+        from: "Burra Bristol <hello@burrabristol.co.uk>",
         to: email,
         subject: "We've received your private hire enquiry",
         html: `
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
 
       await resend.emails.send({
         from: "Burra Website <onboarding@resend.dev>",
-        to: "burrabristol@gmail.com",
+        to: "hello@burrabristol.co.uk",
         replyTo: email,
         subject: `Website Enquiry [${subjectLabel}] — ${name}`,
         html: `
@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
       });
 
       await resend.emails.send({
-        from: "Burra Bristol <burrabristol@gmail.com>",
+        from: "Burra Bristol <hello@burrabristol.co.uk>",
         to: email,
         subject: "Thanks for your message — Burra Bristol",
         html: `
