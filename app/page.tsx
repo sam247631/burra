@@ -7,7 +7,6 @@ import HeroSection        from "@/components/HeroSection";
 import ReviewsMarquee     from "@/components/ReviewsMarquee";
 import EventCard          from "@/components/EventCard";
 import RevealText         from "@/components/RevealText";
-import CountUp            from "@/components/CountUp";
 import CoffeeDrip         from "@/components/CoffeeDrip";
 import ShopStrip          from "@/components/ShopStrip";
 import ExpandingLocations from "@/components/ExpandingLocations";
@@ -24,65 +23,6 @@ export default function HomePage() {
           1  HERO
       ══════════════════════════════════════ */}
       <HeroSection heroImage="/images/north-street-opening.jpg" />
-
-      {/* ══════════════════════════════════════
-          3  MISSION — full-bleed dark
-      ══════════════════════════════════════ */}
-      <section className="py-14 md:py-20 px-8 md:px-14" style={{ backgroundColor: "var(--espresso)" }}>
-        <div className="max-w-screen-xl mx-auto">
-          {/* Big statement — each line clips up individually */}
-          <div className="space-y-2">
-            {["Inspiring our", "community through", "award-winning coffee."].map((line, i) => (
-              <RevealText key={line} delay={i * 0.12}>
-                <h2
-                  className="font-bold leading-[0.9] text-white tracking-tight"
-                  style={{
-                    fontFamily: "var(--font-playfair)",
-                    fontSize: "clamp(3rem, 8.5vw, 8rem)",
-                    letterSpacing: "-0.02em",
-                  }}
-                >
-                  {line}
-                </h2>
-              </RevealText>
-            ))}
-          </div>
-
-          {/* Bottom: stats + link */}
-          <div className="mt-16 flex flex-col md:flex-row items-start md:items-end justify-between gap-10">
-            {/* Inline stats */}
-            <div className="flex flex-wrap gap-x-10 gap-y-6">
-              {[
-                { to: 4.8, decimals: 1, suffix: "★", label: "Google" },
-                { to: 380, suffix: "+",            label: "Reviews" },
-                { to: 3,                            label: "Locations" },
-                { to: 2021,                         label: "Founded" },
-              ].map(({ to, decimals, suffix, label }) => (
-                <div key={label}>
-                  <p
-                    className="font-bold text-white"
-                    style={{ fontFamily: "var(--font-playfair)", fontSize: "clamp(2rem,4vw,3.25rem)" }}
-                  >
-                    <CountUp to={to} decimals={decimals ?? 0} suffix={suffix ?? ""} />
-                  </p>
-                  <p className="text-fluid-label uppercase tracking-[0.35em] mt-1" style={{ color: "rgba(247,243,238,0.28)" }}>
-                    {label}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            <Link
-              href="/our-story"
-              className="inline-flex items-center gap-2 text-sm font-semibold group flex-shrink-0"
-              style={{ color: "var(--caramel-light)" }}
-            >
-              Our story
-              <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-            </Link>
-          </div>
-        </div>
-      </section>
 
       {/* ══════════════════════════════════════
           4  STORY — image clip + pull quote
