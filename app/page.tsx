@@ -49,15 +49,6 @@ export default function HomePage() {
       ══════════════════════════════════════ */}
       <section className="py-28 md:py-40 px-8 md:px-14" style={{ backgroundColor: "var(--espresso)" }}>
         <div className="max-w-screen-xl mx-auto">
-          {/* Top rule */}
-          <div className="flex items-center gap-5 mb-14">
-            <div className="h-px flex-1" style={{ backgroundColor: "rgba(247,243,238,0.08)" }} />
-            <span className="text-fluid-label font-semibold uppercase tracking-[0.45em]" style={{ color: "rgba(247,243,238,0.25)" }}>
-              Bristol · Antipodean · Community
-            </span>
-            <div className="h-px flex-1" style={{ backgroundColor: "rgba(247,243,238,0.08)" }} />
-          </div>
-
           {/* Big statement — each line clips up individually */}
           <div className="space-y-2">
             {["Inspiring our", "community through", "award-winning coffee."].map((line, i) => (
