@@ -15,11 +15,15 @@ export default function CartDrawer({
 }) {
   const { items, remove, update, total, clear } = useCart();
   const [loading, setLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   const voucherItems = items.filter((i) => i.id.startsWith("voucher-"));
   const stripeItems = items.filter((i) => !i.id.startsWith("voucher-"));
   const hasVouchers = voucherItems.length > 0;
   const hasStripeItems = stripeItems.length > 0;
+  const hasPhysical = stripeItems.some(
+    (i) => i.id.startsWith("tee-") || i.id.startsWith("coffee-")
+  );
 
   async function handleCheckout() {
     if (hasVouchers && !hasStripeItems) {
@@ -27,14 +31,19 @@ export default function CartDrawer({
       return;
     }
     setLoading(true);
+    setCheckoutError(null);
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ items: stripeItems, origin: window.location.origin }),
       });
-      const { url } = await res.json();
-      if (url) window.location.href = url;
+      const data = await res.json();
+      if (!res.ok) {
+        setCheckoutError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+      if (data.url) window.location.href = data.url;
     } finally {
       setLoading(false);
     }
@@ -152,7 +161,7 @@ export default function CartDrawer({
                   £{total.toFixed(2)}
                 </span>
               </div>
-              {hasStripeItems && (
+              {hasPhysical && (
                 <div className="flex justify-between items-center">
                   <span className="text-sm opacity-60">UK Shipping</span>
                   <span className="text-sm font-medium" style={{ color: "var(--espresso)" }}>£5.00</span>
@@ -161,10 +170,15 @@ export default function CartDrawer({
               <div className="flex justify-between items-center pt-2 border-t" style={{ borderColor: "var(--sand)" }}>
                 <span className="text-sm font-semibold">Total</span>
                 <span className="text-xl font-bold" style={{ fontFamily: "var(--font-playfair)", color: "var(--espresso)" }}>
-                  £{(total + (hasStripeItems ? 5 : 0)).toFixed(2)}
+                  £{(total + (hasPhysical ? 5 : 0)).toFixed(2)}
                 </span>
               </div>
             </div>
+            {checkoutError && (
+              <p className="text-xs text-center mb-3 font-medium" style={{ color: "#c0392b" }}>
+                {checkoutError}
+              </p>
+            )}
             {hasVouchers && hasStripeItems && (
               <p className="text-xs text-center mb-3 opacity-50" style={{ color: "var(--espresso)" }}>
                 Gift vouchers will open in Square separately.

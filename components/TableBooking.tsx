@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Users, Check, ShoppingBag } from "lucide-react";
 import { Event } from "@/lib/data";
 import { useCart } from "@/lib/cartContext";
@@ -10,9 +10,18 @@ export default function TableBooking({ event }: { event: Event }) {
   const [guests, setGuests] = useState(2);
   const [tickets, setTickets] = useState(1);
   const [booked, setBooked] = useState(false);
+  const [remaining, setRemaining] = useState<number | null>(null);
 
   const selectedTable = event.tables.find((t) => t.id === selected);
   const isWorkshop = event.type === "workshop";
+
+  useEffect(() => {
+    if (!isWorkshop || event.soldOut) return;
+    fetch(`/api/tickets?eventId=${event.id}`)
+      .then((r) => r.json())
+      .then((d) => setRemaining(d.remaining ?? null))
+      .catch(() => setRemaining(event.ticketsRemaining ?? null));
+  }, [event.id, isWorkshop, event.soldOut, event.ticketsRemaining]);
 
   function handleBook() {
     if (isWorkshop) {
@@ -68,7 +77,7 @@ export default function TableBooking({ event }: { event: Event }) {
                 {tickets}
               </span>
               <button
-                onClick={() => setTickets(Math.min(event.capacity, tickets + 1))}
+                onClick={() => setTickets(Math.min(remaining ?? event.capacity, tickets + 1))}
                 className="w-8 h-8 rounded-full border flex items-center justify-center font-bold hover:bg-gray-100 transition-colors"
                 style={{ borderColor: "var(--sand)" }}
               >
@@ -76,7 +85,7 @@ export default function TableBooking({ event }: { event: Event }) {
               </button>
             </div>
             <span className="text-xs opacity-40" style={{ color: "var(--espresso)" }}>
-              {event.capacity} spots available
+              {remaining === null ? "…" : remaining} spots left
             </span>
           </div>
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { Resend } from "resend";
 import crypto from "crypto";
+import { events } from "@/lib/data";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const resend = new Resend(process.env.RESEND_API_KEY!);
@@ -161,6 +162,40 @@ export async function POST(req: NextRequest) {
         inkthreadableOrderId = result?.order?.id ?? null;
       } catch (err) {
         console.error("Inkthreadable order failed:", err);
+      }
+    }
+
+    // ── Update ticket inventory in Stripe product metadata ──────────────────
+    const eventTicketsRaw = session.metadata?.eventTickets;
+    if (eventTicketsRaw) {
+      const ticketMeta: Array<{ eventId: string; tickets: number }> = JSON.parse(eventTicketsRaw);
+      for (const { eventId, tickets } of ticketMeta) {
+        try {
+          const result = await stripe.products.search({
+            query: `metadata["event_id"]:"${eventId}"`,
+          });
+          const product = result.data[0];
+          const currentSold = product ? parseInt(product.metadata.tickets_sold ?? "0", 10) : 0;
+          const newSold = currentSold + tickets;
+
+          if (product) {
+            await stripe.products.update(product.id, {
+              metadata: { ...product.metadata, tickets_sold: String(newSold) },
+            });
+          } else {
+            const event = events.find((e) => e.id === eventId);
+            await stripe.products.create({
+              name: `Event Tickets: ${eventId}`,
+              metadata: {
+                event_id: eventId,
+                tickets_sold: String(newSold),
+                capacity: String(event?.capacity ?? 0),
+              },
+            });
+          }
+        } catch (err) {
+          console.error(`Failed to update ticket count for ${eventId}:`, err);
+        }
       }
     }
 
