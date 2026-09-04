@@ -6,7 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 const resend = new Resend(process.env.RESEND_API_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
-const FULFILLMENT_EMAIL = "hello@burrabristol.co.uk";
+const FULFILLMENT_EMAIL = "burrabristol@gmail.com";
 
 function formatAddress(addr: Stripe.Address | null | undefined): string {
   if (!addr) return "Not provided";
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     // ── Customer confirmation email ──────────────────────────────────────────
     if (customerEmail) {
       await resend.emails.send({
-        from: "Burra Bristol <hello@burrabristol.co.uk>",
+        from: "Burra Bristol <burrabristol@gmail.com>",
         to: customerEmail,
         subject: `Order confirmed — Burra Bristol (#${orderId})`,
         html: `
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
             </div>
 
             <p style="font-size:13px; opacity:0.5;">
-              Questions? Reply to this email or find us at hello@burrabristol.co.uk<br/>
+              Questions? Reply to this email or find us at burrabristol@gmail.com<br/>
               Burra · North Street · Clifton · Redland
             </p>
           </div>
@@ -120,7 +120,7 @@ export async function POST(req: NextRequest) {
       : "";
 
     await resend.emails.send({
-      from: "Burra Orders <noreply@burrabristol.co.uk>",
+      from: "Burra Orders <onboarding@resend.dev>",
       to: FULFILLMENT_EMAIL,
       subject: `🛍️ New order to fulfil — #${orderId}`,
       html: `
