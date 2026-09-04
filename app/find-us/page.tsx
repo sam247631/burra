@@ -1,4 +1,4 @@
-import { MapPin, Clock, Mail } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import { locations } from "@/lib/data";
 
 export default function FindUsPage() {
@@ -72,16 +72,7 @@ export default function FindUsPage() {
                       <p className="text-sm opacity-60" style={{ color: "var(--espresso)" }}>{loc.hours.weekend}</p>
                     </div>
                   </div>
-                  <div className="flex gap-3 items-start">
-                    <Mail size={18} className="flex-shrink-0 mt-0.5" style={{ color: "var(--caramel)" }} />
-                    <a
-                      href={`mailto:${loc.email}`}
-                      className="text-sm font-medium hover:opacity-60 transition-opacity"
-                      style={{ color: "var(--caramel)" }}
-                    >
-                      {loc.email}
-                    </a>
-                  </div>
+
                 </div>
                 <a
                   href={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address + ", " + loc.city)}`}
