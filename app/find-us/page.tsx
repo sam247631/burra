@@ -45,7 +45,8 @@ export default function FindUsPage() {
                   href={`https://maps.google.com/maps?q=${encodeURIComponent(loc.address + ", " + loc.city)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="absolute inset-0"
+                  className="absolute inset-0 cursor-pointer"
+                  style={{ zIndex: 10 }}
                   aria-label={`Open ${loc.name} in Google Maps`}
                 />
               </div>
