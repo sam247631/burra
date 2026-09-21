@@ -175,7 +175,7 @@ export const events: Event[] = [
       { id: "G6", label: "Garden 6", seats: 2, position: { x: 87, y: 52 }, available: true,  section: "garden" },
     ],
     type: "dining",
-    soldOut: false,
+    soldOut: true,
   },
 
   // ─── SOLD OUT / PAST ────────────────────────────────────────────────────────
