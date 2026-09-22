@@ -127,6 +127,108 @@ function generateTables(count: number): Table[] {
 export const events: Event[] = [
   // ─── UPCOMING ───────────────────────────────────────────────────────────────
   {
+    id: "winter-tasting-redland-jan",
+    title: "Winter Tasting Evening",
+    subtitle: "Burra & Corks — Redland",
+    location: "Burra Redland, Lower Redland Road, Bristol BS6 6TB",
+    date: "Thursday 15 January 2027",
+    time: "7:00pm — 11:00pm",
+    price: 90,
+    description:
+      "Join Burra for a winter evening of bold seasonal cooking and carefully selected wines. Chef Toru Yanada brings his Michelin-trained technique to a menu that celebrates the depth of winter produce — warming, inventive, and full of character. Corks of Bristol will be on hand to pair each course with wines that complement and surprise, from rich reds to crisp naturals. A convivial night for those who love great food and good company.",
+    image: "/images/fine-dining-plate.jpg",
+    capacity: 40,
+    chef: "Toru Yanada — former Michelin-star chef",
+    partner: "Corks of Bristol",
+    highlights: [
+      "Seasonal winter tasting menu — Japanese technique through an Antipodean lens",
+      "Wine pairing for every course, curated by Corks of Bristol",
+      "Hosted at Burra Redland — intimate, relaxed setting",
+      "Full refunds available up to 14 days before the event",
+    ],
+    refundPolicy: "Full refunds available up to 14 days before the event.",
+    tables: [
+      // Bar seats
+      { id: "Bar3", label: "Bar 3", seats: 1, position: { x: 8, y: 20 }, available: true,  section: "indoor" },
+      { id: "Bar2", label: "Bar 2", seats: 1, position: { x: 8, y: 50 }, available: true,  section: "indoor" },
+      { id: "Bar1", label: "Bar 1", seats: 1, position: { x: 8, y: 80 }, available: true,  section: "indoor" },
+      // Top row
+      { id: "T3",  label: "Table 3",  seats: 2, position: { x: 26, y: 20 }, available: true,  section: "indoor" },
+      { id: "T4",  label: "Table 4",  seats: 2, position: { x: 35, y: 20 }, available: true,  section: "indoor" },
+      { id: "T5",  label: "Table 5",  seats: 2, position: { x: 45, y: 20 }, available: true,  section: "indoor" },
+      { id: "T6",  label: "Table 6",  seats: 4, position: { x: 55, y: 20 }, available: false, section: "indoor" }, // held
+      // High tables (middle)
+      { id: "H1",  label: "High Table 1", seats: 4, position: { x: 31, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      { id: "H2",  label: "High Table 2", seats: 4, position: { x: 46, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      // Rear indoor
+      { id: "T7",  label: "Table 7",  seats: 2, position: { x: 26, y: 80 }, available: true,  section: "indoor" },
+      { id: "T8",  label: "Table 8",  seats: 4, position: { x: 36, y: 80 }, available: false, section: "indoor" }, // held
+      { id: "T9",  label: "Table 9",  seats: 2, position: { x: 46, y: 80 }, available: true,  section: "indoor" },
+      { id: "HR",  label: "High Table (Rear)", seats: 6, position: { x: 57, y: 80 }, available: false, shape: "wide", section: "indoor" }, // held
+      // Garden top row
+      { id: "G1", label: "Garden 1", seats: 2, position: { x: 71, y: 20 }, available: true,  section: "garden" },
+      { id: "G2", label: "Garden 2", seats: 2, position: { x: 79, y: 20 }, available: true,  section: "garden" },
+      { id: "G3", label: "Garden 3", seats: 2, position: { x: 87, y: 20 }, available: true,  section: "garden" },
+      { id: "G4", label: "Garden 4", seats: 2, position: { x: 95, y: 20 }, available: true,  section: "garden" },
+      // Garden bottom row
+      { id: "G5", label: "Garden 5", seats: 2, position: { x: 75, y: 52 }, available: true,  section: "garden" },
+      { id: "G6", label: "Garden 6", seats: 2, position: { x: 87, y: 52 }, available: true,  section: "garden" },
+    ],
+    type: "dining",
+    soldOut: false,
+  },
+  {
+    id: "winter-tasting-redland-nov",
+    title: "Winter Tasting Evening",
+    subtitle: "Burra & Corks — Redland",
+    location: "Burra Redland, Lower Redland Road, Bristol BS6 6TB",
+    date: "Thursday 20 November 2026",
+    time: "7:00pm — 11:00pm",
+    price: 90,
+    description:
+      "Join Burra for a winter evening of bold seasonal cooking and carefully selected wines. Chef Toru Yanada brings his Michelin-trained technique to a menu that celebrates the depth of winter produce — warming, inventive, and full of character. Corks of Bristol will be on hand to pair each course with wines that complement and surprise, from rich reds to crisp naturals. A convivial night for those who love great food and good company.",
+    image: "/images/evening-dinner-champagne.jpg",
+    capacity: 40,
+    chef: "Toru Yanada — former Michelin-star chef",
+    partner: "Corks of Bristol",
+    highlights: [
+      "Seasonal winter tasting menu — Japanese technique through an Antipodean lens",
+      "Wine pairing for every course, curated by Corks of Bristol",
+      "Hosted at Burra Redland — intimate, relaxed setting",
+      "Full refunds available up to 14 days before the event",
+    ],
+    refundPolicy: "Full refunds available up to 14 days before the event.",
+    tables: [
+      // Bar seats
+      { id: "Bar3", label: "Bar 3", seats: 1, position: { x: 8, y: 20 }, available: true,  section: "indoor" },
+      { id: "Bar2", label: "Bar 2", seats: 1, position: { x: 8, y: 50 }, available: true,  section: "indoor" },
+      { id: "Bar1", label: "Bar 1", seats: 1, position: { x: 8, y: 80 }, available: true,  section: "indoor" },
+      // Top row
+      { id: "T3",  label: "Table 3",  seats: 2, position: { x: 26, y: 20 }, available: true,  section: "indoor" },
+      { id: "T4",  label: "Table 4",  seats: 2, position: { x: 35, y: 20 }, available: true,  section: "indoor" },
+      { id: "T5",  label: "Table 5",  seats: 2, position: { x: 45, y: 20 }, available: true,  section: "indoor" },
+      { id: "T6",  label: "Table 6",  seats: 4, position: { x: 55, y: 20 }, available: true,  section: "indoor" },
+      // High tables (middle)
+      { id: "H1",  label: "High Table 1", seats: 4, position: { x: 31, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      { id: "H2",  label: "High Table 2", seats: 4, position: { x: 46, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      // Rear indoor
+      { id: "T7",  label: "Table 7",  seats: 2, position: { x: 26, y: 80 }, available: true,  section: "indoor" },
+      { id: "T8",  label: "Table 8",  seats: 4, position: { x: 36, y: 80 }, available: false, section: "indoor" }, // provisional
+      { id: "T9",  label: "Table 9",  seats: 2, position: { x: 46, y: 80 }, available: true,  section: "indoor" },
+      { id: "HR",  label: "High Table (Rear)", seats: 6, position: { x: 57, y: 80 }, available: false, shape: "wide", section: "indoor" }, // held
+      // Garden top row
+      { id: "G1", label: "Garden 1", seats: 2, position: { x: 71, y: 20 }, available: true,  section: "garden" },
+      { id: "G2", label: "Garden 2", seats: 2, position: { x: 79, y: 20 }, available: true,  section: "garden" },
+      { id: "G3", label: "Garden 3", seats: 2, position: { x: 87, y: 20 }, available: true,  section: "garden" },
+      { id: "G4", label: "Garden 4", seats: 2, position: { x: 95, y: 20 }, available: true,  section: "garden" },
+      // Garden bottom row
+      { id: "G5", label: "Garden 5", seats: 2, position: { x: 75, y: 52 }, available: true,  section: "garden" },
+      { id: "G6", label: "Garden 6", seats: 2, position: { x: 87, y: 52 }, available: true,  section: "garden" },
+    ],
+    type: "dining",
+    soldOut: false,
+  },
+  {
     id: "autumn-tasting-redland-sept",
     title: "Autumn Tasting Evening",
     subtitle: "Burra & Corks — Redland",
