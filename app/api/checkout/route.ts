@@ -91,10 +91,19 @@ export async function POST(req: NextRequest) {
     mode: "payment",
     success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/`,
+    allow_promotion_codes: true,
     ...(hasPhysical && {
       shipping_address_collection: { allowed_countries: ["GB"] },
       phone_number_collection: { enabled: true },
     }),
+    custom_fields: [
+      {
+        key: "allergies",
+        label: { type: "custom", custom: "Any allergies or dietary requirements?" },
+        type: "text",
+        optional: false,
+      },
+    ],
     metadata: {
       hasMerch: hasPhysical ? "true" : "false",
       ...(eventTicketMeta.length > 0 && {
