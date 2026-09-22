@@ -186,7 +186,7 @@ export default function TableBooking({ event }: { event: Event }) {
                 disabled={isUnavailable}
                 onClick={() => {
                 if (isUnavailable) return;
-                if (isSelected) { setSelected(null); } else { setSelected(table.id); setGuests(table.seats); }
+                if (isSelected) { setSelected(null); } else { setSelected(table.id); setGuests(table.minSeats ?? table.seats); }
               }}
                 className="absolute flex flex-col items-center justify-center text-[10px] font-semibold transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed"
                 style={{
@@ -215,7 +215,7 @@ export default function TableBooking({ event }: { event: Event }) {
                 <span className="leading-tight text-center px-0.5">{table.label}</span>
                 {!isCircle && (
                   <span className="opacity-50 text-[9px]">
-                    {isUnavailable ? "taken" : `${table.seats}p`}
+                    {isUnavailable ? "taken" : table.minSeats && table.minSeats < table.seats ? `${table.minSeats}–${table.seats}p` : `${table.seats}p`}
                   </span>
                 )}
               </button>
@@ -247,7 +247,10 @@ export default function TableBooking({ event }: { event: Event }) {
           <div className="flex items-center gap-2 mb-4">
             <Check size={16} style={{ color: "var(--caramel)" }} />
             <span className="text-sm font-semibold" style={{ color: "var(--espresso)" }}>
-              {selectedTable.label} selected · {selectedTable.seats} {selectedTable.seats === 1 ? "person" : "people"} minimum
+              {selectedTable.label} selected ·{" "}
+              {selectedTable.minSeats && selectedTable.minSeats < selectedTable.seats
+                ? `${selectedTable.minSeats}–${selectedTable.seats} people`
+                : `${selectedTable.seats} ${selectedTable.seats === 1 ? "person" : "people"}`}
             </span>
           </div>
 
@@ -258,7 +261,7 @@ export default function TableBooking({ event }: { event: Event }) {
             </label>
             <div className="flex items-center gap-3">
               <button
-                onClick={() => setGuests(Math.max(selectedTable.seats, guests - 1))}
+                onClick={() => setGuests(Math.max(selectedTable.minSeats ?? selectedTable.seats, guests - 1))}
                 className="w-8 h-8 rounded-full border flex items-center justify-center font-bold hover:bg-gray-100 transition-colors"
                 style={{ borderColor: "var(--sand)" }}
               >

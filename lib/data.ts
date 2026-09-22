@@ -36,6 +36,7 @@ export type Table = {
   id: string;
   label: string;
   seats: number;
+  minSeats?: number;
   position: { x: number; y: number };
   available: boolean;
   shape?: "circle" | "wide";
@@ -148,23 +149,19 @@ export const events: Event[] = [
     ],
     refundPolicy: "Full refunds available up to 14 days before the event.",
     tables: [
-      // Bar seats
-      { id: "Bar3", label: "Bar 3", seats: 1, position: { x: 8, y: 20 }, available: true,  section: "indoor" },
-      { id: "Bar2", label: "Bar 2", seats: 1, position: { x: 8, y: 50 }, available: true,  section: "indoor" },
-      { id: "Bar1", label: "Bar 1", seats: 1, position: { x: 8, y: 80 }, available: true,  section: "indoor" },
       // Top row
-      { id: "T3",  label: "Table 3",  seats: 2, position: { x: 26, y: 20 }, available: true,  section: "indoor" },
-      { id: "T4",  label: "Table 4",  seats: 2, position: { x: 35, y: 20 }, available: true,  section: "indoor" },
-      { id: "T5",  label: "Table 5",  seats: 2, position: { x: 45, y: 20 }, available: true,  section: "indoor" },
-      { id: "T6",  label: "Table 6",  seats: 4, position: { x: 55, y: 20 }, available: false, section: "indoor" }, // held
+      { id: "T3",  label: "Table 3",  seats: 2, position: { x: 18, y: 20 }, available: true,  section: "indoor" },
+      { id: "T4",  label: "Table 4",  seats: 2, position: { x: 28, y: 20 }, available: true,  section: "indoor" },
+      { id: "T5",  label: "Table 5",  seats: 2, position: { x: 38, y: 20 }, available: true,  section: "indoor" },
+      { id: "T6",  label: "Table 6",  seats: 4, position: { x: 50, y: 20 }, available: false, section: "indoor" }, // held
       // High tables (middle)
-      { id: "H1",  label: "High Table 1", seats: 4, position: { x: 31, y: 50 }, available: true, shape: "wide", section: "indoor" },
-      { id: "H2",  label: "High Table 2", seats: 4, position: { x: 46, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      { id: "H1",  label: "High Table 1", seats: 6, minSeats: 3, position: { x: 27, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      { id: "H2",  label: "High Table 2", seats: 6, minSeats: 3, position: { x: 46, y: 50 }, available: true, shape: "wide", section: "indoor" },
       // Rear indoor
-      { id: "T7",  label: "Table 7",  seats: 2, position: { x: 26, y: 80 }, available: true,  section: "indoor" },
-      { id: "T8",  label: "Table 8",  seats: 4, position: { x: 36, y: 80 }, available: false, section: "indoor" }, // held
-      { id: "T9",  label: "Table 9",  seats: 2, position: { x: 46, y: 80 }, available: true,  section: "indoor" },
-      { id: "HR",  label: "High Table (Rear)", seats: 6, position: { x: 57, y: 80 }, available: false, shape: "wide", section: "indoor" }, // held
+      { id: "T7",  label: "Table 7",  seats: 2, position: { x: 18, y: 80 }, available: true,  section: "indoor" },
+      { id: "T8",  label: "Table 8",  seats: 4, position: { x: 30, y: 80 }, available: false, section: "indoor" }, // held
+      { id: "T9",  label: "Table 9",  seats: 2, position: { x: 40, y: 80 }, available: true,  section: "indoor" },
+      { id: "HR",  label: "High Table (Rear)", seats: 6, minSeats: 3, position: { x: 55, y: 80 }, available: false, shape: "wide", section: "indoor" }, // held
       // Garden top row
       { id: "G1", label: "Garden 1", seats: 2, position: { x: 71, y: 20 }, available: true,  section: "garden" },
       { id: "G2", label: "Garden 2", seats: 2, position: { x: 79, y: 20 }, available: true,  section: "garden" },
@@ -199,23 +196,19 @@ export const events: Event[] = [
     ],
     refundPolicy: "Full refunds available up to 14 days before the event.",
     tables: [
-      // Bar seats
-      { id: "Bar3", label: "Bar 3", seats: 1, position: { x: 8, y: 20 }, available: true,  section: "indoor" },
-      { id: "Bar2", label: "Bar 2", seats: 1, position: { x: 8, y: 50 }, available: true,  section: "indoor" },
-      { id: "Bar1", label: "Bar 1", seats: 1, position: { x: 8, y: 80 }, available: true,  section: "indoor" },
       // Top row
-      { id: "T3",  label: "Table 3",  seats: 2, position: { x: 26, y: 20 }, available: true,  section: "indoor" },
-      { id: "T4",  label: "Table 4",  seats: 2, position: { x: 35, y: 20 }, available: true,  section: "indoor" },
-      { id: "T5",  label: "Table 5",  seats: 2, position: { x: 45, y: 20 }, available: true,  section: "indoor" },
-      { id: "T6",  label: "Table 6",  seats: 4, position: { x: 55, y: 20 }, available: true,  section: "indoor" },
+      { id: "T3",  label: "Table 3",  seats: 2, position: { x: 18, y: 20 }, available: true,  section: "indoor" },
+      { id: "T4",  label: "Table 4",  seats: 2, position: { x: 28, y: 20 }, available: true,  section: "indoor" },
+      { id: "T5",  label: "Table 5",  seats: 2, position: { x: 38, y: 20 }, available: true,  section: "indoor" },
+      { id: "T6",  label: "Table 6",  seats: 4, position: { x: 50, y: 20 }, available: true,  section: "indoor" },
       // High tables (middle)
-      { id: "H1",  label: "High Table 1", seats: 4, position: { x: 31, y: 50 }, available: true, shape: "wide", section: "indoor" },
-      { id: "H2",  label: "High Table 2", seats: 4, position: { x: 46, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      { id: "H1",  label: "High Table 1", seats: 6, minSeats: 3, position: { x: 27, y: 50 }, available: true, shape: "wide", section: "indoor" },
+      { id: "H2",  label: "High Table 2", seats: 6, minSeats: 3, position: { x: 46, y: 50 }, available: true, shape: "wide", section: "indoor" },
       // Rear indoor
-      { id: "T7",  label: "Table 7",  seats: 2, position: { x: 26, y: 80 }, available: true,  section: "indoor" },
-      { id: "T8",  label: "Table 8",  seats: 4, position: { x: 36, y: 80 }, available: false, section: "indoor" }, // provisional
-      { id: "T9",  label: "Table 9",  seats: 2, position: { x: 46, y: 80 }, available: true,  section: "indoor" },
-      { id: "HR",  label: "High Table (Rear)", seats: 6, position: { x: 57, y: 80 }, available: false, shape: "wide", section: "indoor" }, // held
+      { id: "T7",  label: "Table 7",  seats: 2, position: { x: 18, y: 80 }, available: true,  section: "indoor" },
+      { id: "T8",  label: "Table 8",  seats: 4, position: { x: 30, y: 80 }, available: false, section: "indoor" }, // provisional
+      { id: "T9",  label: "Table 9",  seats: 2, position: { x: 40, y: 80 }, available: true,  section: "indoor" },
+      { id: "HR",  label: "High Table (Rear)", seats: 6, minSeats: 3, position: { x: 55, y: 80 }, available: false, shape: "wide", section: "indoor" }, // held
       // Garden top row
       { id: "G1", label: "Garden 1", seats: 2, position: { x: 71, y: 20 }, available: true,  section: "garden" },
       { id: "G2", label: "Garden 2", seats: 2, position: { x: 79, y: 20 }, available: true,  section: "garden" },
