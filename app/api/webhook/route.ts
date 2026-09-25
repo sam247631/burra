@@ -9,6 +9,7 @@ const resend = new Resend(process.env.RESEND_API_KEY!);
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 const FULFILLMENT_EMAIL = "hello@burrabristol.co.uk";
+const BOOKINGS_EMAIL = "burrabristol@gmail.com";
 
 const COLOR_MAP: Record<string, string> = {
   white: "WHI",
@@ -183,13 +184,13 @@ export async function POST(req: NextRequest) {
               metadata: { ...product.metadata, tickets_sold: String(newSold) },
             });
           } else {
-            const event = events.find((e) => e.id === eventId);
+            const ev = events.find((e) => e.id === eventId);
             await stripe.products.create({
               name: `Event Tickets: ${eventId}`,
               metadata: {
                 event_id: eventId,
                 tickets_sold: String(newSold),
-                capacity: String(event?.capacity ?? 0),
+                capacity: String(ev?.capacity ?? 0),
               },
             });
           }
@@ -199,18 +200,96 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // ── Mark booked tables in Stripe product metadata ────────────────────────
+    const eventTablesRaw = session.metadata?.eventTables;
+    if (eventTablesRaw) {
+      const tableMeta: Array<{ eventId: string; tableId: string; guests: number }> = JSON.parse(eventTablesRaw);
+      for (const { eventId, tableId } of tableMeta) {
+        try {
+          const result = await stripe.products.search({
+            query: `metadata["event_id"]:"${eventId}"`,
+          });
+          const product = result.data[0];
+          const currentBooked = product?.metadata?.booked_tables ?? "";
+          const bookedList = currentBooked ? currentBooked.split(",") : [];
+          if (!bookedList.includes(tableId)) bookedList.push(tableId);
+
+          if (product) {
+            await stripe.products.update(product.id, {
+              metadata: { ...product.metadata, booked_tables: bookedList.join(",") },
+            });
+          } else {
+            const ev = events.find((e) => e.id === eventId);
+            await stripe.products.create({
+              name: `Event Tickets: ${eventId}`,
+              metadata: {
+                event_id: eventId,
+                tickets_sold: "0",
+                capacity: String(ev?.capacity ?? 0),
+                booked_tables: tableId,
+              },
+            });
+          }
+        } catch (err) {
+          console.error(`Failed to mark table ${tableId} booked for ${eventId}:`, err);
+        }
+      }
+    }
+
+    // ── Resolve allergies from Stripe custom fields ──────────────────────────
+    const allergiesField = session.custom_fields?.find((f) => f.key === "allergies");
+    const allergies = (allergiesField as { text?: { value?: string | null } } | undefined)?.text?.value || "None stated";
+
+    // ── Resolve event details for event bookings ──────────────────────────────
+    const isEventBooking = !!(session.metadata?.eventTables || session.metadata?.eventTickets);
+    let eventSummaryLines: string[] = [];
+    if (session.metadata?.eventTables) {
+      const tableMeta: Array<{ eventId: string; tableId: string; guests: number }> = JSON.parse(session.metadata.eventTables);
+      for (const { eventId, tableId, guests } of tableMeta) {
+        const ev = events.find((e) => e.id === eventId);
+        const tableLabel = ev?.tables.find((t) => t.id === tableId)?.label ?? tableId;
+        eventSummaryLines.push(`${ev?.title ?? eventId} · ${ev?.date ?? ""} · ${tableLabel} · ${guests} ${guests === 1 ? "person" : "people"}`);
+      }
+    }
+    if (session.metadata?.eventTickets) {
+      const ticketMeta: Array<{ eventId: string; tickets: number }> = JSON.parse(session.metadata.eventTickets);
+      for (const { eventId, tickets } of ticketMeta) {
+        const ev = events.find((e) => e.id === eventId);
+        eventSummaryLines.push(`${ev?.title ?? eventId} · ${ev?.date ?? ""} · ${tickets} ${tickets === 1 ? "ticket" : "tickets"}`);
+      }
+    }
+
     // ── Customer confirmation email ──────────────────────────────────────────
     if (customerEmail) {
+      const customerSubtitle = isEventBooking
+        ? "Your booking is confirmed. We look forward to seeing you on the night."
+        : "Your order is confirmed and we're getting it ready. We'll email you when it's dispatched.";
+
+      const eventBlockHtml = isEventBooking && eventSummaryLines.length > 0
+        ? `<div style="background:rgba(74,44,28,0.06); border-radius:10px; padding:16px 20px; font-size:13px; margin-bottom:24px;">
+            <p style="margin:0 0 8px; opacity:0.5; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">Your booking</p>
+            ${eventSummaryLines.map((l) => `<p style="margin:0 0 4px;">${l}</p>`).join("")}
+          </div>`
+        : "";
+
+      const shippingBlockHtml = !isEventBooking
+        ? `<div style="background:rgba(74,44,28,0.06); border-radius:10px; padding:16px 20px; font-size:13px; margin-bottom:24px;">
+            <p style="margin:0 0 4px; opacity:0.5; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">Delivering to</p>
+            <p style="margin:0;">${shippingAddress}</p>
+          </div>`
+        : "";
+
       await resend.emails.send({
         from: "Burra Bristol <onboarding@resend.dev>",
         to: customerEmail,
-        subject: `Order confirmed — Burra Bristol (#${orderId})`,
+        subject: isEventBooking
+          ? `Booking confirmed — Burra Bristol (#${orderId})`
+          : `Order confirmed — Burra Bristol (#${orderId})`,
         html: `
           <div style="font-family: Georgia, serif; max-width: 560px; margin: 0 auto; padding: 40px 24px; background: #f7f3ee; color: #4a2c1c;">
             <h1 style="font-size: 26px; margin: 0 0 8px;">Thanks, ${customerName}!</h1>
-            <p style="font-size: 15px; line-height: 1.65; opacity: 0.7; margin: 0 0 28px;">
-              Your order is confirmed and we're getting it ready. We'll email you when it's dispatched.
-            </p>
+            <p style="font-size: 15px; line-height: 1.65; opacity: 0.7; margin: 0 0 28px;">${customerSubtitle}</p>
+            ${eventBlockHtml}
             <table style="width:100%; border-collapse:collapse; font-size:14px; margin-bottom:24px;">
               <thead>
                 <tr style="opacity:0.45; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">
@@ -227,10 +306,7 @@ export async function POST(req: NextRequest) {
                 </tr>
               </tfoot>
             </table>
-            <div style="background:rgba(74,44,28,0.06); border-radius:10px; padding:16px 20px; font-size:13px; margin-bottom:24px;">
-              <p style="margin:0 0 4px; opacity:0.5; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">Delivering to</p>
-              <p style="margin:0;">${shippingAddress}</p>
-            </div>
+            ${shippingBlockHtml}
             <p style="font-size:13px; opacity:0.5;">
               Questions? Reply to this email or find us at hello@burrabristol.co.uk<br/>
               Burra · North Street · Clifton · Redland
@@ -241,14 +317,30 @@ export async function POST(req: NextRequest) {
     }
 
     // ── Internal fulfillment email ───────────────────────────────────────────
+    const eventBookingBlockHtml = isEventBooking && eventSummaryLines.length > 0
+      ? `<div style="background:#fff8f0; border:1.5px solid #d4924a; border-radius:12px; padding:20px 24px; margin-bottom:24px;">
+          <p style="font-weight:bold; margin:0 0 12px; font-size:15px;">📅 Event booking</p>
+          <table style="width:100%; border-collapse:collapse; font-size:14px;">
+            ${eventSummaryLines.map((l) => `<tr><td style="padding:4px 0;">${l}</td></tr>`).join("")}
+            <tr><td style="padding:8px 0 4px; opacity:0.5; font-size:12px; text-transform:uppercase; letter-spacing:0.05em;">Allergies / dietary</td></tr>
+            <tr><td style="padding:0 0 4px; font-weight:bold;">${allergies}</td></tr>
+          </table>
+        </div>`
+      : "";
+
+    const internalRecipients = isEventBooking
+      ? [FULFILLMENT_EMAIL, BOOKINGS_EMAIL]
+      : [FULFILLMENT_EMAIL];
+
     await resend.emails.send({
       from: "Burra Orders <onboarding@resend.dev>",
-      to: FULFILLMENT_EMAIL,
-      subject: `🛍️ New order — #${orderId}`,
+      to: internalRecipients,
+      subject: isEventBooking ? `📅 New event booking — #${orderId}` : `🛍️ New order — #${orderId}`,
       html: `
         <div style="font-family: Georgia, serif; max-width: 580px; margin: 0 auto; padding: 32px 24px; background: #f7f3ee; color: #4a2c1c;">
-          <h2 style="margin:0 0 4px;">New order — #${orderId}</h2>
+          <h2 style="margin:0 0 4px;">${isEventBooking ? "New event booking" : "New order"} — #${orderId}</h2>
           <p style="opacity:0.5; font-size:13px; margin:0 0 24px;">Stripe session: ${session.id}</p>
+          ${eventBookingBlockHtml}
           <table style="width:100%; border-collapse:collapse; font-size:14px; margin-bottom:24px;">
             <thead>
               <tr style="opacity:0.45; font-size:11px; text-transform:uppercase; letter-spacing:0.05em;">
@@ -269,7 +361,8 @@ export async function POST(req: NextRequest) {
             <tr><td style="padding:6px 0; opacity:0.5; width:130px;">Customer</td><td>${customerName}</td></tr>
             <tr><td style="padding:6px 0; opacity:0.5;">Email</td><td>${customerEmail ?? "—"}</td></tr>
             <tr><td style="padding:6px 0; opacity:0.5;">Phone</td><td>${phone}</td></tr>
-            <tr><td style="padding:6px 0; opacity:0.5;">Ship to</td><td>${shippingAddress}</td></tr>
+            ${!isEventBooking ? `<tr><td style="padding:6px 0; opacity:0.5;">Ship to</td><td>${shippingAddress}</td></tr>` : ""}
+            ${isEventBooking ? `<tr><td style="padding:6px 0; opacity:0.5;">Allergies</td><td style="font-weight:bold;">${allergies}</td></tr>` : ""}
           </table>
           ${hasTees ? `
           <div style="background:${inkthreadableOrderId ? "#f0fff4" : "#fff7ed"}; border:1.5px solid ${inkthreadableOrderId ? "#38a169" : "#d4924a"}; border-radius:12px; padding:20px 24px;">

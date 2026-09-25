@@ -15,13 +15,43 @@ export async function POST(req: NextRequest) {
 
   // Check ticket capacity for event items before creating session
   const eventTicketMeta: Array<{ eventId: string; tickets: number }> = [];
+  const eventTableMeta: Array<{ eventId: string; tableId: string; guests: number }> = [];
 
   for (const item of stripeItems) {
-    const match = (item.id as string).match(/^(.+)-tickets-(\d+)$/);
-    if (!match) continue;
-    const [, eventId, ticketsStr] = match;
-    const ticketsRequested = parseInt(ticketsStr, 10) * (item.qty ?? 1);
+    const ticketMatch = (item.id as string).match(/^(.+)-tickets-(\d+)$/);
+    if (ticketMatch) {
+      const [, eventId, ticketsStr] = ticketMatch;
+      const ticketsRequested = parseInt(ticketsStr, 10) * (item.qty ?? 1);
 
+      const event = events.find((e) => e.id === eventId);
+      if (!event) continue;
+
+      const result = await stripe.products.search({
+        query: `metadata["event_id"]:"${eventId}"`,
+      });
+      const product = result.data[0];
+      const ticketsSold = product ? parseInt(product.metadata.tickets_sold ?? "0", 10) : 0;
+      const remaining = event.capacity - ticketsSold;
+
+      if (ticketsRequested > remaining) {
+        return NextResponse.json(
+          {
+            error:
+              remaining === 0
+                ? `Sorry, ${event.title} (${event.date}) is now sold out.`
+                : `Only ${remaining} ticket${remaining === 1 ? "" : "s"} remaining for ${event.title} (${event.date}).`,
+          },
+          { status: 409 }
+        );
+      }
+
+      eventTicketMeta.push({ eventId, tickets: ticketsRequested });
+      continue;
+    }
+
+    const tableMatch = (item.id as string).match(/^(.+)-(T\d+|H\d+|G\d+)$/);
+    if (!tableMatch) continue;
+    const [, eventId, tableId] = tableMatch;
     const event = events.find((e) => e.id === eventId);
     if (!event) continue;
 
@@ -29,22 +59,20 @@ export async function POST(req: NextRequest) {
       query: `metadata["event_id"]:"${eventId}"`,
     });
     const product = result.data[0];
-    const ticketsSold = product ? parseInt(product.metadata.tickets_sold ?? "0", 10) : 0;
-    const remaining = event.capacity - ticketsSold;
+    const bookedTablesRaw = product?.metadata?.booked_tables ?? "";
+    const bookedTables = bookedTablesRaw ? bookedTablesRaw.split(",") : [];
 
-    if (ticketsRequested > remaining) {
+    if (bookedTables.includes(tableId)) {
+      const table = event.tables.find((t) => t.id === tableId);
       return NextResponse.json(
-        {
-          error:
-            remaining === 0
-              ? `Sorry, ${event.title} (${event.date}) is now sold out.`
-              : `Only ${remaining} ticket${remaining === 1 ? "" : "s"} remaining for ${event.title} (${event.date}).`,
-        },
+        { error: `Sorry, ${table?.label ?? tableId} is no longer available for ${event.title}.` },
         { status: 409 }
       );
     }
 
-    eventTicketMeta.push({ eventId, tickets: ticketsRequested });
+    const guestsMatch = (item.variant as string | undefined)?.match(/^(\d+) guests/);
+    const guests = guestsMatch ? parseInt(guestsMatch[1]) : (item.qty ?? 1);
+    eventTableMeta.push({ eventId, tableId, guests });
   }
 
   const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = stripeItems.map(
@@ -108,6 +136,9 @@ export async function POST(req: NextRequest) {
       hasMerch: hasPhysical ? "true" : "false",
       ...(eventTicketMeta.length > 0 && {
         eventTickets: JSON.stringify(eventTicketMeta),
+      }),
+      ...(eventTableMeta.length > 0 && {
+        eventTables: JSON.stringify(eventTableMeta),
       }),
     },
     custom_text: {

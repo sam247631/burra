@@ -11,6 +11,7 @@ export default function TableBooking({ event }: { event: Event }) {
   const [tickets, setTickets] = useState(1);
   const [booked, setBooked] = useState(false);
   const [remaining, setRemaining] = useState<number | null>(null);
+  const [bookedTables, setBookedTables] = useState<string[]>([]);
 
   const selectedTable = event.tables.find((t) => t.id === selected);
   const isWorkshop = event.type === "workshop";
@@ -22,6 +23,14 @@ export default function TableBooking({ event }: { event: Event }) {
       .then((d) => setRemaining(d.remaining ?? null))
       .catch(() => setRemaining(event.ticketsRemaining ?? null));
   }, [event.id, isWorkshop, event.soldOut, event.ticketsRemaining]);
+
+  useEffect(() => {
+    if (isWorkshop || event.soldOut) return;
+    fetch(`/api/tables?eventId=${event.id}`)
+      .then((r) => r.json())
+      .then((d) => setBookedTables(d.bookedTables ?? []))
+      .catch(() => {});
+  }, [event.id, isWorkshop, event.soldOut]);
 
   function handleBook() {
     if (isWorkshop) {
@@ -175,7 +184,7 @@ export default function TableBooking({ event }: { event: Event }) {
 
           {event.tables.map((table) => {
             const isSelected = selected === table.id;
-            const isUnavailable = !table.available;
+            const isUnavailable = !table.available || bookedTables.includes(table.id);
             const isCircle = table.shape === "circle";
             const isWide = table.shape === "wide";
             const w = isCircle ? 38 : isWide ? 62 : 46;
