@@ -181,7 +181,7 @@ export const events: Event[] = [
     location: "Burra Redland, Lower Redland Road, Bristol BS6 6TB",
     date: "Thursday 20 November 2026",
     time: "7:00pm — 11:00pm",
-    price: 0.31,
+    price: 90,
     description:
       "Join Burra for a winter evening of bold seasonal cooking and carefully selected wines. Chef Toru Yanada brings his Michelin-trained technique to a menu that celebrates the depth of winter produce — warming, inventive, and full of character. Corks of Bristol will be on hand to pair each course with wines that complement and surprise, from rich reds to crisp naturals. A convivial night for those who love great food and good company.",
     image: "/images/evening-dinner-champagne.jpg",
