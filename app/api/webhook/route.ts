@@ -280,7 +280,7 @@ export async function POST(req: NextRequest) {
         : "";
 
       await resend.emails.send({
-        from: "Burra Bristol <onboarding@resend.dev>",
+        from: "Burra Bristol <hello@burrabristol.co.uk>",
         to: customerEmail,
         subject: isEventBooking
           ? `Booking confirmed — Burra Bristol (#${orderId})`
@@ -333,7 +333,7 @@ export async function POST(req: NextRequest) {
       : [FULFILLMENT_EMAIL];
 
     await resend.emails.send({
-      from: "Burra Orders <onboarding@resend.dev>",
+      from: "Burra Orders <hello@burrabristol.co.uk>",
       to: internalRecipients,
       subject: isEventBooking ? `📅 New event booking — #${orderId}` : `🛍️ New order — #${orderId}`,
       html: `
