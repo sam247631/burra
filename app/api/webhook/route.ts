@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
   if (event.type === "checkout.session.completed") {
     const raw = event.data.object as Stripe.Checkout.Session;
     const session = await stripe.checkout.sessions.retrieve(raw.id, {
-      expand: ["shipping_details", "customer_details"],
+      expand: ["customer_details"],
     });
 
     const customerEmail = session.customer_details?.email;
