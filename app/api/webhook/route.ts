@@ -279,7 +279,7 @@ export async function POST(req: NextRequest) {
           </div>`
         : "";
 
-      await resend.emails.send({
+      try { await resend.emails.send({
         from: "Burra Bristol <hello@burrabristol.co.uk>",
         to: customerEmail,
         subject: isEventBooking
@@ -313,7 +313,7 @@ export async function POST(req: NextRequest) {
             </p>
           </div>
         `,
-      });
+      }); } catch (err) { console.error("Customer email failed:", err); }
     }
 
     // ── Internal fulfillment email ───────────────────────────────────────────
@@ -332,7 +332,7 @@ export async function POST(req: NextRequest) {
       ? [FULFILLMENT_EMAIL, BOOKINGS_EMAIL]
       : [FULFILLMENT_EMAIL];
 
-    await resend.emails.send({
+    try { await resend.emails.send({
       from: "Burra Orders <hello@burrabristol.co.uk>",
       to: internalRecipients,
       subject: isEventBooking ? `📅 New event booking — #${orderId}` : `🛍️ New order — #${orderId}`,
@@ -378,7 +378,7 @@ export async function POST(req: NextRequest) {
           ` : ""}
         </div>
       `,
-    });
+    }); } catch (err) { console.error("Internal email failed:", err); }
   }
 
   return NextResponse.json({ received: true });
