@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 async function getLiveTicketCounts(): Promise<Record<string, number>> {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-    const result = await stripe.products.search({ query: 'metadata["event_id"]:*', limit: 100 });
+    const result = await stripe.products.list({ limit: 100 });
     const counts: Record<string, number> = {};
     for (const product of result.data) {
       const eventId = product.metadata.event_id;
