@@ -1,7 +1,28 @@
+import Stripe from "stripe";
 import { events } from "@/lib/data";
 import EventCard from "@/components/EventCard";
 
-export default function EventsPage() {
+export const dynamic = "force-dynamic";
+
+async function getLiveTicketCounts(): Promise<Record<string, number>> {
+  try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+    const result = await stripe.products.search({ query: 'metadata["event_id"]:*', limit: 100 });
+    const counts: Record<string, number> = {};
+    for (const product of result.data) {
+      const eventId = product.metadata.event_id;
+      const sold = parseInt(product.metadata.tickets_sold ?? "0", 10);
+      const capacity = parseInt(product.metadata.capacity ?? "0", 10);
+      if (eventId && capacity) counts[eventId] = Math.max(0, capacity - sold);
+    }
+    return counts;
+  } catch {
+    return {};
+  }
+}
+
+export default async function EventsPage() {
+  const liveCounts = await getLiveTicketCounts();
   const dining = events.filter((e) => e.type === "dining");
   const upcomingWorkshops = events.filter((e) => e.type === "workshop" && !e.soldOut);
   const pastWorkshops = events.filter((e) => e.type === "workshop" && e.soldOut);
@@ -33,7 +54,7 @@ export default function EventsPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {dining.map((e) => (
-              <EventCard key={e.id} event={e} />
+              <EventCard key={e.id} event={e} liveRemaining={liveCounts[e.id]} />
             ))}
           </div>
         </div>
@@ -50,7 +71,7 @@ export default function EventsPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {upcomingWorkshops.map((e) => (
-              <EventCard key={e.id} event={e} />
+              <EventCard key={e.id} event={e} liveRemaining={liveCounts[e.id]} />
             ))}
           </div>
         </div>

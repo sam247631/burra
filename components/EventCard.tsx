@@ -6,9 +6,11 @@ import { Event } from "@/lib/data";
 export default function EventCard({
   event,
   variant = "light",
+  liveRemaining,
 }: {
   event: Event;
   variant?: "light" | "dark";
+  liveRemaining?: number;
 }) {
   const isDark = variant === "dark";
 
@@ -153,20 +155,20 @@ export default function EventCard({
               style={{
                 backgroundColor: isSoldOut
                   ? "rgba(74,44,28,0.07)"
-                  : event.ticketsRemaining !== undefined && event.ticketsRemaining <= 3
+                  : (liveRemaining ?? event.ticketsRemaining) !== undefined && (liveRemaining ?? event.ticketsRemaining) <= 3
                   ? "rgba(184,115,42,0.12)"
                   : "rgba(45,74,45,0.1)",
                 color: isSoldOut
                   ? "rgba(74,44,28,0.4)"
-                  : event.ticketsRemaining !== undefined && event.ticketsRemaining <= 3
+                  : (liveRemaining ?? event.ticketsRemaining) !== undefined && (liveRemaining ?? event.ticketsRemaining) <= 3
                   ? "var(--caramel)"
                   : "var(--forest)",
               }}
             >
               {isSoldOut
                 ? "Sold out"
-                : event.ticketsRemaining !== undefined
-                ? `${event.ticketsRemaining} ticket${event.ticketsRemaining === 1 ? "" : "s"} left`
+                : (liveRemaining ?? event.ticketsRemaining) !== undefined
+                ? `${(liveRemaining ?? event.ticketsRemaining)} ticket${(liveRemaining ?? event.ticketsRemaining) === 1 ? "" : "s"} left`
                 : `${event.capacity} spots`}
             </div>
           </div>
