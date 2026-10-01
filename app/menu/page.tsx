@@ -2,58 +2,94 @@ import Image from "next/image";
 
 const menuSections = [
   {
-    title: "All Day Brunch",
-    subtitle: "Served 8am – 3pm",
+    title: "Eggs & Dishes",
+    subtitle: "Served all day",
     items: [
-      { name: "Full Burra", description: "Eggs your way, smashed avo, roasted tomato, halloumi, sourdough", price: "£14.50" },
-      { name: "Bacon & Egg Roll", description: "Thick-cut smoked bacon, free-range fried egg, sriracha mayo, brioche bun", price: "£8.00" },
-      { name: "Avo Smash", description: "Whipped avo, poached eggs, dukkah, chilli oil, sourdough", price: "£11.50" },
-      { name: "Shakshuka", description: "Baked eggs in spiced tomato & pepper sauce, feta, warm flatbread", price: "£12.00" },
-      { name: "Poke Bowl", description: "Sushi rice, sesame-marinated veg, edamame, pickled ginger, miso dressing", price: "£13.50", badge: "Vegan" },
-      { name: "Burra Granola Bowl", description: "House-made granola, seasonal compote, coconut yoghurt", price: "£8.50", badge: "Vegan" },
-      { name: "French Toast", description: "Brioche, whipped mascarpone, seasonal berries, maple syrup", price: "£10.50" },
+      { name: "Feta & Eggs", description: "Soft poached free range eggs, whipped feta, pistachio zaatar, avocado, sourdough", price: "£14.80", badge: "V" },
+      { name: "Ricotta & Eggs", description: "Soft poached free range eggs, maple ricotta, apricot harissa, chimichurri, avocado, sourdough", price: "£14.80", badge: "V" },
+      { name: "Sobrasada & Eggs", description: "Spreadable chorizo, scrambled eggs, sweet corn salsa, chilli jam, sourdough", price: "£14.20" },
+      { name: "Scrambled Eggs", description: "Scrambled eggs, mixed leaves, sourdough", price: "£11.00", badge: "V" },
+      { name: "Smashed Avo", description: "Avocado, mixed leaves, sourdough, chilli jam", price: "£11.00", badge: "V" },
+      { name: "Cannellini Beans", description: "Sesame & chilli cannellini beans, avocado, coconut yoghurt, pomegranate, sourdough", price: "£13.00", badge: "V" },
     ],
   },
   {
-    title: "Coffee",
-    subtitle: "Extract Coffee Roasters · St Werburghs, Bristol",
+    title: "Eggs Benedict",
+    subtitle: "On toasted English muffin with hollandaise",
     items: [
-      { name: "Espresso", description: "Single or double — House Espresso blend", price: "£2.50 / £3.00" },
-      { name: "Flat White", description: "Double ristretto, velvety steamed milk", price: "£3.80" },
-      { name: "Cappuccino / Latte", description: "Double espresso, your choice of milk", price: "£4.00" },
-      { name: "Filter / Batch Brew", description: "Rotating single origin, black", price: "£3.20" },
-      { name: "Cold Brew", description: "18-hour cold-steeped, served over ice", price: "£4.50" },
-      { name: "Matcha Latte", description: "Ceremonial-grade matcha, oat milk", price: "£4.20" },
-      { name: "Hot Chocolate", description: "Belgian dark chocolate, steamed milk", price: "£4.00" },
+      { name: "Eggs Royale", description: "Soft poached free range eggs, Loch Duart hot-smoked salmon", price: "£14.90" },
+      { name: "Eggs Benedict", description: "Soft poached free range eggs, Serrano ham", price: "£13.20" },
+      { name: "Avocado Bene", description: "Soft poached free-range eggs, avocado", price: "£12.60", badge: "V" },
     ],
   },
   {
-    title: "Pastries & Bakes",
-    subtitle: "Baked fresh in house every morning",
+    title: "Rice Bowls",
+    subtitle: "Add a fried egg for £1.50",
     items: [
-      { name: "Butter Croissant", description: "Classic French laminated pastry", price: "£3.20" },
-      { name: "Almond Croissant", description: "Double-baked with almond frangipane", price: "£3.80" },
-      { name: "Pain au Chocolat", description: "Dark chocolate batons, flaky pastry", price: "£3.50" },
-      { name: "Banana Loaf", description: "Caramelised banana, walnut, dark chocolate chunks", price: "£3.80" },
-      { name: "Cinnamon Roll", description: "Soft enriched dough, cream cheese glaze", price: "£4.20" },
-      { name: "Seasonal Cookie", description: "Ask your barista for today's flavour", price: "£2.80" },
+      { name: "Salmon Rice Bowl", description: "Loch Duart hot-smoked salmon, miso mayo, edamame beans, Asian slaw, sushi rice", price: "£15.30" },
+      { name: "Crispy Chilli Rice Bowl", description: "Crispy chilli oil (peanuts, almonds), avocado, miso mayo, edamame beans, sushi rice", price: "£12.50", badge: "VG" },
     ],
   },
   {
-    title: "Evening Dining",
-    subtitle: "Thursday – Saturday from 6pm · Ticketed events",
-    description: "Our evening dining series features rotating chefs, paired wines, and sharing menus inspired by the best of Bristol's producers. Tickets include a welcome drink.",
+    title: "Buns",
+    subtitle: "Served on a toasted bun",
     items: [
-      { name: "Welcome Cocktail", description: "Seasonal house cocktail on arrival", price: "Included" },
-      { name: "Sharing Snacks", description: "3–4 small plates to start", price: "Included" },
-      { name: "Main Courses", description: "2–3 courses from rotating guest chefs", price: "Included" },
-      { name: "Wine Pairing", description: "Optional matched wines from local importers", price: "£25 supplement" },
+      { name: "The Works", description: "Fried egg, sausage, back bacon, mixed leaves, halloumi, beef tomato, jalapeño mayo", price: "£13.70" },
+      { name: "Brekkie", description: "Fried egg, sausage, back bacon, mixed leaves, jalapeño mayo", price: "£11.00" },
+      { name: "Halloumi", description: "Fried egg, halloumi, beef tomato, chilli jam, miso mayo, pickled onion", price: "£11.00", badge: "V" },
+      { name: "Buttery Toast", description: "Toasted sourdough, butter, jam", price: "£5.40", badge: "V" },
     ],
-    cta: { label: "Book a table", href: "/events" },
+  },
+  {
+    title: "Something Sweet",
+    subtitle: "See counter for today's cakes",
+    items: [
+      { name: "Matcha Mascarpone Pancakes", description: "Matcha mascarpone, kumquat butter, blackcurrant, banana", price: "£10.50", badge: "V" },
+      { name: "Banana Bread", description: "Blackcurrant compote, cashew crème, almond coconut yoghurt", price: "£8.20", badge: "VG" },
+      { name: "Granola", description: "Oats, almonds, coconut yoghurt, pomegranate molasses", price: "£9.00", badge: "VG GF" },
+    ],
+  },
+  {
+    title: "Add to Any Dish",
+    subtitle: "",
+    items: [
+      { name: "Free Range Egg", description: "", price: "£1.50" },
+      { name: "Avocado", description: "", price: "£2.50", badge: "V" },
+      { name: "Halloumi", description: "", price: "£3.50", badge: "V" },
+      { name: "Back Bacon", description: "", price: "£3.00" },
+      { name: "Sausage", description: "", price: "£3.00" },
+      { name: "Hot-Smoked Salmon", description: "", price: "£4.00" },
+    ],
+  },
+  {
+    title: "Hot Drinks",
+    subtitle: "Extract Coffee Roasters · Oat milk & decaf at no extra charge",
+    items: [
+      { name: "Filter", description: "", price: "£3.90" },
+      { name: "Espresso", description: "", price: "£2.60 / £2.90" },
+      { name: "Americano", description: "", price: "£3.70" },
+      { name: "Flat White", description: "", price: "£3.90" },
+      { name: "Latte", description: "", price: "£4.00" },
+      { name: "Cappuccino", description: "", price: "£4.00" },
+      { name: "Mocha", description: "", price: "£4.10" },
+      { name: "Hot Chocolate", description: "", price: "£4.00 / £3.00" },
+      { name: "Matcha", description: "", price: "£4.20" },
+      { name: "Chai", description: "", price: "£4.00" },
+      { name: "Tea", description: "Breakfast, Earl Grey, Green, Minty, Rooibos", price: "£3.30" },
+      { name: "Extra Shot", description: "", price: "£0.80" },
+    ],
+  },
+  {
+    title: "Cold Drinks",
+    subtitle: "",
+    items: [
+      { name: "Freshly Squeezed OJ", description: "", price: "£4.30" },
+      { name: "LemonAid", description: "Mate or Passionfruit", price: "£3.90" },
+    ],
   },
 ];
 
-const allergenNote = "Full allergen information is available in venue. Please speak to a team member if you have any dietary requirements. (v) Vegetarian · (vg) Vegan · (gf) Gluten-free options available.";
+const allergenNote = "Full allergen information is available in venue. Please speak to a team member if you have any dietary requirements. (V) Vegetarian · (VG) Vegan · (GF) Gluten-free. A discretionary 10% service charge is added to all sit-in food orders.";
 
 export default function MenuPage() {
   return (
@@ -81,7 +117,6 @@ export default function MenuPage() {
       <div className="max-w-4xl mx-auto px-6">
         {menuSections.map((section) => (
           <section key={section.title} className="mb-20">
-            {/* Section header */}
             <div className="mb-8 pb-4" style={{ borderBottom: "1px solid rgba(74,44,28,0.12)" }}>
               <h2
                 className="text-3xl font-bold mb-1"
@@ -89,17 +124,13 @@ export default function MenuPage() {
               >
                 {section.title}
               </h2>
-              <p className="text-sm opacity-50" style={{ color: "var(--espresso)" }}>
-                {section.subtitle}
-              </p>
-              {section.description && (
-                <p className="mt-3 text-sm leading-relaxed opacity-70" style={{ color: "var(--espresso)" }}>
-                  {section.description}
+              {section.subtitle && (
+                <p className="text-sm opacity-50" style={{ color: "var(--espresso)" }}>
+                  {section.subtitle}
                 </p>
               )}
             </div>
 
-            {/* Items */}
             <div className="divide-y" style={{ borderColor: "rgba(74,44,28,0.07)" }}>
               {section.items.map((item) => (
                 <div key={item.name} className="flex items-start justify-between gap-6 py-5">
@@ -114,15 +145,17 @@ export default function MenuPage() {
                       {"badge" in item && item.badge && (
                         <span
                           className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                          style={{ backgroundColor: "var(--forest)", color: "white" }}
+                          style={{ backgroundColor: "rgba(45,74,45,0.12)", color: "var(--forest)" }}
                         >
                           {item.badge}
                         </span>
                       )}
                     </div>
-                    <p className="text-sm leading-relaxed opacity-55" style={{ color: "var(--espresso)" }}>
-                      {item.description}
-                    </p>
+                    {item.description && (
+                      <p className="text-sm leading-relaxed opacity-55" style={{ color: "var(--espresso)" }}>
+                        {item.description}
+                      </p>
+                    )}
                   </div>
                   <span
                     className="flex-shrink-0 text-sm font-semibold mt-0.5"
@@ -133,22 +166,9 @@ export default function MenuPage() {
                 </div>
               ))}
             </div>
-
-            {section.cta && (
-              <div className="mt-8">
-                <a
-                  href={section.cta.href}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold text-white transition-opacity hover:opacity-90"
-                  style={{ backgroundColor: "var(--espresso)" }}
-                >
-                  {section.cta.label} →
-                </a>
-              </div>
-            )}
           </section>
         ))}
 
-        {/* Allergen note */}
         <div
           className="rounded-2xl p-6 text-center text-xs leading-relaxed"
           style={{ backgroundColor: "var(--sand)", color: "var(--espresso)", opacity: 0.7 }}

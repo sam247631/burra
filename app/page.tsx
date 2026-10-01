@@ -276,10 +276,10 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { src: "/images/food-burger.jpg", label: "Burra Bacon & Egg Roll", sub: "Brioche · streaky bacon · fried egg · rocket" },
-              { src: "/images/food-bowl.jpg",   label: "Poke Bowl",              sub: "Edamame · pickled red cabbage · miso · sesame" },
-              { src: "/images/latte-art.jpg",   label: "Flat White",             sub: "Extract house blend · double shot · silky milk" },
-              { src: "/images/croissants.jpg",  label: "Pastries",               sub: "Baked fresh in house every morning" },
+              { src: "/images/food-burger.jpg", label: "The Works",              sub: "Fried egg · sausage · back bacon · halloumi · jalapeño mayo" },
+              { src: "/images/food-bowl.jpg",   label: "Salmon Rice Bowl",       sub: "Hot-smoked salmon · miso mayo · edamame · sushi rice" },
+              { src: "/images/latte-art.jpg",   label: "Flat White",             sub: "Extract beans · double ristretto · silky steamed milk" },
+              { src: "/images/croissants.jpg",  label: "Matcha Pancakes",        sub: "Matcha mascarpone · kumquat butter · blackcurrant · banana" },
             ].map(({ src, label, sub }) => (
               <div key={label} className="group rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(74,44,28,0.08)" }}>
                 <div className="relative h-56 overflow-hidden">
