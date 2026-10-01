@@ -279,7 +279,7 @@ export default function HomePage() {
               { src: "/images/food-burger.jpg", label: "The Works",              sub: "Fried egg · sausage · back bacon · halloumi · jalapeño mayo" },
               { src: "/images/food-bowl.jpg",   label: "Salmon Rice Bowl",       sub: "Hot-smoked salmon · miso mayo · edamame · sushi rice" },
               { src: "/images/latte-art.jpg",   label: "Flat White",             sub: "Extract beans · double ristretto · silky steamed milk" },
-              { src: "/images/croissants.jpg",  label: "Matcha Pancakes",        sub: "Matcha mascarpone · kumquat butter · blackcurrant · banana" },
+              { src: "/images/matcha-pancakes.jpg", label: "Matcha Pancakes",     sub: "Matcha mascarpone · kumquat butter · blackcurrant · banana" },
             ].map(({ src, label, sub }) => (
               <div key={label} className="group rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(74,44,28,0.08)" }}>
                 <div className="relative h-56 overflow-hidden">
